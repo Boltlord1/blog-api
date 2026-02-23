@@ -3,6 +3,8 @@ import postRouter from './routes/post.js'
 
 const app = express()
 
+app.use(express.urlencoded({ extended: true }))
+
 app.use('/post', postRouter)
 
 const port = process.env.PORT || 3000
