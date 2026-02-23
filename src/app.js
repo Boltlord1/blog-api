@@ -1,6 +1,9 @@
 import express from 'express'
+import postRouter from './routes/post.js'
 
 const app = express()
+
+app.use('/post', postRouter)
 
 const port = process.env.PORT || 3000
 app.listen(port, (err) => {
