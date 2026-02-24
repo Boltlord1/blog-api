@@ -18,27 +18,27 @@ async function postPost(req, res) {
         title,
         text
     }})
-    res.json(post)
+    res.redirect(`${req.headers.origin}/post/${post.id}`)
 }
 
 async function putPost(req, res) {
     const id = Number(req.params.id)
     const title = req.body.title
     const text = req.body.text
-    const post = await prisma.post.update({
+    await prisma.post.update({
         where: { id },
         data: {
             title,
             text
         }
     })
-    res.json(post)
+    res.redirect(`${req.headers.origin}/post/${id}`)
 }
 
 async function deletePost(req, res) {
     const id = Number(req.params.id)
-    const post = await prisma.post.delete({ where: { id }})
-    res.json(post)
+    await prisma.post.delete({ where: { id }})
+    res.redirect(req.headers.origin)
 }
 
 export default {

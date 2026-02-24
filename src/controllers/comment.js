@@ -12,18 +12,18 @@ async function postComment(req, res) {
     if (!errors.isEmpty()) return res.status(400).json(errors.array())
     const { user, text } = matchedData(req)
     const id = Number(req.params.id)
-    const comment = await prisma.comment.create({ data: {
+    await prisma.comment.create({ data: {
         user,
         text,
         post: { connect: { id }}
     }})
-    res.json(comment)
+    res.redirect(`${req.headers.origin}/post/${id}`)
 }
 
 async function deleteComment(req, res) {
     const id = Number(req.params.id)
-    const comment = await prisma.comment.delete({ where: { id }})
-    res.json(comment)
+    await prisma.comment.delete({ where: { id }})
+    res.redirect(`${req.headers.origin}/post/${id}`)
 }
 
 export default {
