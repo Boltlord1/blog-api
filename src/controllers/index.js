@@ -7,7 +7,7 @@ async function postLogIn(req, res) {
     const matches = await bcrypt.compare(passcode, hash)
     if (!matches) return res.status(400).json({ matches })
     const secret = process.env.JWT_SECRET
-    jwt.sign({ hash, matches }, secret, (err, token) => {
+    jwt.sign({ hash, matches }, secret, { expiresIn: '30d' }, (err, token) => {
         if (err) return res.status(400).json({ err })
         res.json({ token })
     })
