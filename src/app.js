@@ -6,9 +6,20 @@ import commentRouter from './routes/comment.js'
 
 const app = express()
 
+const front = process.env.FRONT_LINK
+const edit = process.env.EDIT_LINK
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(cors())
+app.use(cors({
+    origin: (origin, cb) => {
+        if (origin === front || origin === edit) {
+            cb( null, true)
+        } else {
+            cb(new Error('Not allowed by CORS'))
+        }
+    }
+}))
 
 app.use('/', indexRouter)
 app.use('/post', postRouter)
