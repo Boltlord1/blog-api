@@ -17,13 +17,14 @@ async function postComment(req, res) {
         text,
         post: { connect: { id }}
     }})
-    res.redirect(`${req.headers.origin}/post/${id}`)
+    res.json(true)
 }
 
 async function deleteComment(req, res) {
     const id = Number(req.params.id)
     await prisma.comment.delete({ where: { id }})
     res.redirect(`${req.headers.origin}/post/${id}`)
+    res.json(true)
 }
 
 export default {

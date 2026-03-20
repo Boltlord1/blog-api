@@ -18,7 +18,7 @@ async function postPost(req, res) {
         title,
         text
     }})
-    res.redirect(`${req.headers.origin}/post/${post.id}`)
+    res.json(true)
 }
 
 async function putPost(req, res) {
@@ -32,13 +32,15 @@ async function putPost(req, res) {
             text
         }
     })
-    res.redirect(`${req.headers.origin}/post/${id}`)
+    res.json(true)
 }
 
 async function deletePost(req, res) {
     const id = Number(req.params.id)
-    await prisma.post.delete({ where: { id }})
-    res.redirect(req.headers.origin)
+    const post = prisma.post.delete({ where: { id }})
+    const comment = prisma.comment.deleteMany({ where: { postId: id }})
+    await prisma.$transaction([comment, post])
+    res.json(true)
 }
 
 export default {

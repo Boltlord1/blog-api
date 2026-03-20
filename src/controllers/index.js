@@ -8,7 +8,7 @@ async function postLogIn(req, res) {
     if (!matches) return res.status(400).json({ matches })
     const secret = process.env.JWT_SECRET
     jwt.sign({ hash, matches }, secret, { expiresIn: '30d' }, (err, token) => {
-        if (err) return res.status(400).json({ err })
+        if (err) return res.json(false)
         res.json({ token })
     })
 }
@@ -20,7 +20,7 @@ async function verifyToken(req, res, next) {
     const token = bearer[1]
     const secret = process.env.JWT_SECRET
     jwt.verify(token, secret, (err,  data) => {
-        if (err) return res.status(400).json({ err })
+        if (err) return res.status(400).json(false)
         next()
     })
 }
