@@ -11,17 +11,11 @@ const allowedOrigins = [ process.env.FRONT_LINK, process.env.EDIT_LINK ]
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors({
-    origin: (origin, callback) => {
-        console.log(origin)
-        console.log(allowedOrigins[0])
-        console.log(allowedOrigins[1])
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error("Not allowed by CORS"));
-        }
-    }
-}))
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
 
 app.use('/', indexRouter)
 app.use('/post', postRouter)
